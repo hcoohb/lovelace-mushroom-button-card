@@ -1,0 +1,291 @@
+button_card_templates:
+  mushroom_card:
+    show_state: true
+    hold_action:
+      action: more-info
+    custom_fields:
+      notification: |
+        [[[
+          if (entity.state =="unavailable"){
+            return `<ha-icon icon="mdi:exclamation" style="width: 12px; height: 12px; color: var(--primary-background-color);"></ha-icon>`
+          }
+        ]]]
+    state:
+      - value: unavailable
+        id: unavail
+        styles:
+          custom_fields:
+            notification:
+              - border-radius: 50%
+              - position: absolute
+              - left: 24px
+              - top: '-2px'
+              - height: 16px
+              - width: 16px
+              - border: 2px solid var(--card-background-color)
+              - font-size: 12px
+              - line-height: 14px
+              - background-color: |
+                  [[[
+                    return "rgba(var(--color-red),1)";
+                  ]]]
+    styles:
+      card:
+        - padding: 12px
+        - '--mdc-ripple-press-opacity': 0
+      grid:
+        - grid-template-areas: '"i n" "i s"'
+        - grid-template-columns: min-content 1fr
+        - grid-template-rows: min-content min-content
+      img_cell:
+        - background-color: rgba(var(--rgb-primary-text-color), 0.05)
+        - border-radius: var(--icon-border-radius)
+        - border-radius: 50%
+        - place-self: flex-start
+        - width: 42px
+        - height: 42px
+        - margin-right: 12px
+      icon:
+        - color: var(--disabled-text-color)
+        - width: 20px
+        - height: 20px
+      name:
+        - justify-self: flex-start
+        - align-self: center
+        - font-size: 14px
+        - font-weight: bold
+        - color: var(--primary-text-color)
+      state:
+        - justify-self: flex-start
+        - align-self: center
+        - font-weight: bolder
+        - font-size: 12px
+        - color: rgb(114,114,114)
+  mushroom_button:
+    variables:
+      color: var(--primary-text-color)
+      background_color: rgba(var(--rgb-primary-text-color), 0.05)
+    styles:
+      card:
+        - box-shadow: none
+        - min-width: 42px
+        - height: 42px
+        - padding: 0
+        - border-radius: 12px
+        - background-color: '[[[ return variables.background_color ]]]'
+        - color: '[[[ return variables.color ]]]'
+      name:
+        - font-weight: bold
+      icon:
+        - width: 20px
+        - color: '[[[ return variables.color ]]]'
+  mushroom_climate_ctrl:
+    show_name: false
+    show_icon: false
+    tap_action:
+      action: navigate
+    styles:
+      card:
+        - box-shadow: none
+        - margin: 12px 0 0 0
+        - padding: 0
+        - border-radius: 0
+        - '--mdc-ripple-press-opacity': 0
+      grid:
+        - grid-template-areas: >-
+            "btn_less target btn_more rest cool_mode heat_mode dry_mode
+            fan_mode"
+        - grid-template-columns: >-
+            min-content min-content min-content 1fr min-content min-content
+            min-content min-content
+        - grid-template-rows: min-content
+      custom_fields:
+        target:
+          - font-size: 14px
+          - min-width: 74px
+          - height: 42px
+          - line-height: 42px
+          - background-color: >-
+              [[[ return (entity.state!="heat") ? "rgba(43,154,249,0.1)" :
+              "rgba(255, 87, 34,0.1)" ]]]
+          - margin: 0 -12px
+          - padding: 0 12px
+          - display: >-
+              [[[ return (["cool","heat"].includes(entity.state)) ? "block" :
+              "none" ]]]
+        btn_less:
+          - display: >-
+              [[[ return (["cool","heat"].includes(entity.state)) ? "block" :
+              "none" ]]]
+        btn_more:
+          - display: >-
+              [[[ return (["cool","heat"].includes(entity.state)) ? "block" :
+              "none" ]]]
+        heat_mode:
+          - margin-left: 12px
+          - display: '[[[ return (entity.state!="heat") ? "block" : "none" ]]]'
+        cool_mode:
+          - margin-left: 12px
+          - display: '[[[ return (entity.state!="cool") ? "block" : "none" ]]]'
+        dry_mode:
+          - margin-left: 12px
+          - display: '[[[ return (entity.state!="dry") ? "block" : "none" ]]]'
+        fan_mode:
+          - margin-left: 12px
+          - display: none
+    custom_fields:
+      target: '[[[ return entity.attributes.temperature + "°C" ]]]'
+      btn_less:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          name: '-'
+          variables:
+            background_color: >-
+              [[[ return (entity.state!="heat") ? "rgb(213 235 254)" : "rgb(255,
+              221, 211)" ]]]
+            color: >-
+              [[[ return (entity.state!="heat") ? "rgb(43,154,249)" : "rgb(255,
+              87, 34)" ]]]
+          tap_action:
+            action: call-service
+            service: climate.set_temperature
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              temperature: '[[[ return entity.attributes.temperature - 1 ]]]'
+      btn_more:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          name: +
+          variables:
+            background_color: >-
+              [[[ return (entity.state!="heat") ? "rgb(213 235 254)" : "rgb(255,
+              221, 211)" ]]]
+            color: >-
+              [[[ return (entity.state!="heat") ? "rgb(43,154,249)" : "rgb(255,
+              87, 34)" ]]]
+          tap_action:
+            action: call-service
+            service: climate.set_temperature
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              temperature: '[[[ return entity.attributes.temperature + 1 ]]]'
+      cool_mode:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          icon: mdi:snowflake
+          variables:
+            background_color: rgba(43,154,249, 0.2)
+            color: rgb(43,154,249)
+          tap_action:
+            action: call-service
+            service: climate.set_hvac_mode
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              hvac_mode: cool
+      heat_mode:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          icon: mdi:fire
+          variables:
+            background_color: rgba(255, 87, 34, 0.2)
+            color: rgb(255, 87, 34)
+          tap_action:
+            action: call-service
+            service: climate.set_hvac_mode
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              hvac_mode: heat
+      dry_mode:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          icon: mdi:water-percent
+          variables:
+            background_color: rgba(76, 175, 80, 0.2)
+            color: rgb(76, 175, 80)
+          tap_action:
+            action: call-service
+            service: climate.set_hvac_mode
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              hvac_mode: dry
+      fan_mode:
+        card:
+          type: custom:button-card
+          template: mushroom_button
+          icon: mdi:fan
+          tap_action:
+            action: call-service
+            service: climate.set_hvac_mode
+            service_data:
+              entity_id: '[[[ return entity.entity_id ]]]'
+              hvac_mode: fan_only
+  mushroom_climate:
+    template: mushroom_card
+    variables:
+      default_hvac_mode: cool
+    icon: |
+      [[[
+            if (entity.state =='cool'){ return "mdi:snowflake";}
+            if (entity.state =='heat'){ return "mdi:fire";}
+            if (entity.state =='fan_only'){ return "mdi:fan";}
+            if (entity.state =='dry'){ return "mdi:water-percent";}
+            return "mdi:air-conditioner";
+      ]]]
+    state_display: |-
+      [[[ var mode = entity.state[0].toUpperCase() + entity.state.substring(1);
+        if (["cool","heat"].includes(entity.state)) return mode+" - " +
+        entity.attributes.current_temperature + "°C"; 
+        if (entity.state  =="fan_only") return "Fan";
+        return mode ]]]
+    tap_action:
+      action: call-service
+      service: climate.set_hvac_mode
+      service_data:
+        entity_id: '[[[ return entity.entity_id ]]]'
+        hvac_mode: |
+          [[[
+                if (entity.state =='off'){ return variables.default_hvac_mode; }
+                return "off";
+          ]]]
+    hold_action:
+      action: more-info
+    state:
+      - value: cool
+        styles:
+          img_cell:
+            - background-color: rgba(43,154,249,0.2)
+          icon:
+            - color: rgb(43,154,249)
+      - value: heat
+        styles:
+          img_cell:
+            - background-color: rgba(255, 87, 34,0.2)
+          icon:
+            - color: rgb(255, 87, 34)
+      - value: dry
+        styles:
+          img_cell:
+            - background-color: rgba(76, 175, 80,0.2)
+          icon:
+            - color: rgb(76, 175, 80)
+      - value: 'off'
+        styles:
+          custom_fields:
+            tmp_ctrl:
+              - display: none
+    styles:
+      grid:
+        - grid-template-areas: '"i n" "i s" "tmp_ctrl tmp_ctrl"'
+        - grid-template-columns: min-content 1fr
+        - grid-template-rows: 1fr 1fr min-content
+    custom_fields:
+      tmp_ctrl:
+        card:
+          type: custom:button-card
+          template: mushroom_climate_ctrl
+          entity: '[[[ return entity.entity_id ]]]'
