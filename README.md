@@ -9,7 +9,7 @@ The intention is to build a collection of [button-card](https://github.com/custo
 -  Specific other requirements may be needed as specified
 
 1. Ensure all requirements are met
-2. In the `Raw configuration editor` in the Lovelace UI editor, copy the code from the `templates.yaml` file at the top (adapt if you already ahve some button-card templates).
+2. In the `Raw configuration editor` in the Lovelace UI editor, copy the code from the `templates.yml` file at the top (adapt if you already ahve some button-card templates).
 3. In the dashboard, add a `Manual card` and place the usage code provided below tweaking as necessary.
 
 ### Cards
