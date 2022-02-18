@@ -33,3 +33,31 @@ The intention is to build a collection of [button-card](https://github.com/custo
 </details>
   
 
+#### 2. :hourglass_flowing_sand: Timer card
+
+![image](https://user-images.githubusercontent.com/12975783/154589587-462e79e5-05e1-4e1f-b7a0-1290b755bd7f.png)
+![image](https://user-images.githubusercontent.com/12975783/154589622-2ddd500b-029a-4ab4-bbf1-a721ee1a57ab.png)
+
+
+<details><summary>See usage</summary>
+  
+> Requirements:
+> - Button-card
+> - [Card-mod](https://github.com/thomasloven/lovelace-card-mod)
+> 
+> Manual card code:
+> ```yaml
+> type: custom:button-card
+> template: mushroom_timer
+> name: Bedside Music Timer
+> entity: timer.bedside_music_timer
+> variables:
+>   input_datetime_id: input_datetime.bedside_music_timer_time
+> ```
+> 
+> Details:
+> - The entity must be a timer (Configuration>Automation&Scenes>Helpers>Add helper>Timer)
+> - variable `input_datetime_id` is the input_datetime that must be created (Configuration>Automation&Scenes>Helpers>Add helper>Date&Time>Time) to be able to configure the duration of the timer from the UI.
+> - Create any automation for what you want to happen, using the trigger: Event> timer.finished
+</details>
+
