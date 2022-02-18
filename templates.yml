@@ -61,6 +61,59 @@ button_card_templates:
         - font-weight: bolder
         - font-size: 12px
         - color: rgb(114,114,114)
+  mushroom_timer:
+    template: mushroom_card
+    variables:
+      input_datetime_id: ''
+    styles:
+      grid:
+        - grid-template-areas: '"i n time_input" "i s time_input"'
+        - grid-template-columns: min-content 1fr min-content
+        - grid-template-rows: min-content min-content
+    state:
+      - value: idle
+        operator: '!='
+        styles:
+          img_cell:
+            - background-color: rgba(139,195,74,0.2)
+          icon:
+            - color: rgb(139 195 74)
+          custom_fields:
+            time_input:
+              - display: none
+    tap_action:
+      action: call-service
+      service: '[[[ return (entity.state =="idle") ? "timer.start" : "timer.cancel" ]]]'
+      service_data: |
+        [[[
+          var obj = { entity_id: entity.entity_id };
+          if (entity.state =='idle')
+            obj.duration = states[variables.input_datetime_id].state ;
+          return obj;
+        ]]]
+    custom_fields:
+      time_input:
+        card:
+          type: entities
+          entities:
+            - entity: '[[[ return variables.input_datetime_id ]]]'
+          card_mod:
+            style:
+              .: |
+                ha-card {
+                  background-color: transparent !important;
+                  box-shadow: none !important;
+                }
+              '#states': |
+                #states { padding:0; }
+                #states> div { margin:0; }
+              '#states hui-input-datetime-entity-row':
+                $:
+                  hui-generic-entity-row:first-of-type:
+                    $: |
+                      state-badge, div.info.pointer.text-content {
+                        display:none;
+                      }
   mushroom_button:
     variables:
       color: var(--primary-text-color)
