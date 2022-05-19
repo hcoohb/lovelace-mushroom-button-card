@@ -30,6 +30,18 @@ The intention is to build a collection of [button-card](https://github.com/custo
 > template: mushroom_climate
 > entity: climate.main_ac
 > ```
+>
+> Variables:
+> - `default_hvac_mode`: set the default mode when card is clicked. (if variable not set: cool)
+> 
+> Manual card code - example with variables:
+> ```yaml
+> type: custom:button-card
+> template: mushroom_climate
+> entity: climate.main_ac
+> variables:
+>  default_hvac_mode: heat
+> ```
 </details>
   
 
