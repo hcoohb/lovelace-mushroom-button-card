@@ -1,4 +1,19 @@
 button_card_templates:
+  header:
+    name: default
+    styles:
+      card:
+        - padding: 12px
+        - background: none
+        - box-shadow: none
+        - border: none
+      name:
+        - font-size: 25px
+        - font-weight: bold
+        - color: rgb(105, 119, 133)
+        - letter-spacing: '-0.01em'
+    tap_action:
+      action: none
   mushroom_card:
     show_state: true
     hold_action:
@@ -103,6 +118,7 @@ button_card_templates:
                 ha-card {
                   background-color: transparent !important;
                   box-shadow: none !important;
+                  border: none;
                 }
               '#states': |
                 #states { padding:0; }
@@ -125,6 +141,7 @@ button_card_templates:
         - height: 42px
         - padding: 0
         - border-radius: 12px
+        - border-width: 0
         - background-color: '[[[ return variables.background_color ]]]'
         - color: '[[[ return variables.color ]]]'
       name:
@@ -143,6 +160,7 @@ button_card_templates:
         - margin: 12px 0 0 0
         - padding: 0
         - border-radius: 0
+        - border-width: 0
         - '--mdc-ripple-press-opacity': 0
       grid:
         - grid-template-areas: >-
